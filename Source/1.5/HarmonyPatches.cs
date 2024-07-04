@@ -1714,6 +1714,26 @@ namespace SaveOurShip2
 		}
 	}
 
+	// Orbital trader event
+	[HarmonyPatch(typeof(IncidentWorker_OrbitalTraderArrival), "CanFireNowSub")]
+	public static class IncreaseShipLimitForTradersInSpace
+	{
+		public static bool Prefix(IncidentParms parms, ref bool __result)
+		{
+			Map map = (Map)parms.target;
+			if (!map.IsSpace())
+			{
+				return false;
+			}
+			else
+			{
+				//increse ships limit for space map. By default, after 5 exising ships, trade ship event won't happen
+				__result = map.passingShipManager.passingShips.Count < 10;
+				return true;
+			}
+		}
+	}
+
 	//ship
 	[HarmonyPatch(typeof(ShipUtility), "ShipBuildingsAttachedTo")] //disable original
 	public static class FindAllTheShipParts
