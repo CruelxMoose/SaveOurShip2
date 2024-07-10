@@ -1724,13 +1724,14 @@ namespace SaveOurShip2
 		}
 		public static void Postfix(Building root, ref List<Building> __result)
 		{
+			__result = new List<Building>();
 			if (root == null || root.Destroyed)
 			{
-				__result = new List<Building>();
 				return;
 			}
 
 			var map = root.Map;
+			var mapComp = map.GetComponent<ShipMapComp>();
 			var containedBuildings = new HashSet<Building>();
 			var cellsTodo = new HashSet<IntVec3>();
 			var cellsDone = new HashSet<IntVec3>();
@@ -1738,7 +1739,21 @@ namespace SaveOurShip2
 			cellsTodo.AddRange(GenAdj.CellsOccupiedBy(root));
 			cellsTodo.AddRange(GenAdj.CellsAdjacentCardinal(root));
 
-			while (cellsTodo.Count > 0)
+			HashSet<int> shipIndexes = new HashSet<int>();
+			foreach (IntVec3 cell in cellsTodo)
+			{
+				shipIndexes.Add(mapComp.ShipIndexOnVec(cell));
+			}
+			foreach (int shipIndex in shipIndexes)
+			{
+				if (shipIndex == -1)
+				{
+					continue;
+				}
+				__result.AddRange(mapComp.ShipsOnMap[shipIndex].Buildings.ToList());
+			}
+
+			/*while (cellsTodo.Count > 0)
 			{
 				var current = cellsTodo.First();
 				cellsTodo.Remove(current);
@@ -1755,7 +1770,7 @@ namespace SaveOurShip2
 					}
 				}
 			}
-			__result = containedBuildings.ToList();
+			__result = containedBuildings.ToList();*/
 		}
 	}
 		
