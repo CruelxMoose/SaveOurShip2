@@ -2775,16 +2775,73 @@ namespace SaveOurShip2
 	{
 		public static void Postfix(QuestPart_DropPods __instance, ref IntVec3 __result)
 		{
+			Log.Warning("Postfix for quest pods");
+
 			if (__instance.mapParent.Map.IsSpace())
 			{
 				IEnumerable<CompShipBay> bays = __instance.mapParent.Map.GetComponent<ShipMapComp>().Bays.Where(b => b is CompShipBaySalvage && b.parent.Faction == Faction.OfPlayer);
 				if (bays.Any())
 				{
-					__result = bays.RandomElement().parent.Position;
+					IntVec3 pos = bays.RandomElement().parent.Position;
+					Log.Warning("Postfix for quest pods - found position. Wipes: " + GenSpawn.SpawningWipes(ThingDefOf.ActiveDropPod, bays.RandomElement().parent.def));
+					Log.Warning("Good spot: " + DropCellFinder.IsGoodDropSpot(pos, __instance.mapParent.Map, false, true));
+					Log.Warning("Can phys drop to: " + DropCellFinder.CanPhysicallyDropInto(pos, __instance.mapParent.Map, true));
+					__result = pos;
 				}
 			}
 		}
 	}
+
+	[HarmonyPatch(typeof(DropCellFinder), "TryFindDropSpotNear")]
+	public static class FindDropPodsNearWithinSalvageBay
+	{
+		public static bool Prefix(IntVec3 center, Map map, out IntVec3 result, bool allowFogged, bool canRoofPunch, ref bool __result, bool allowIndoors = true)
+		{
+			Log.Warning("Find Spot Near called, " + center);
+			result = center;
+			if (!map.IsSpace())
+			{
+				return false;
+			}
+			ShipMapComp comp = map.GetComponent<ShipMapComp>();
+			SpaceShipCache ship = comp.ShipsOnMap[comp.ShipIndexOnVec(center)];
+			if(ship == null)
+			{
+				return false;
+			}
+			CompShipBay bay = ship.Bays.FirstOrDefault(t => t is CompShipBaySalvage && (t.parent.Position == center));
+			if( bay == null)
+			{
+				return false;
+			}
+			foreach (IntVec3 pos in CellRect.CenteredOn(center, 1))
+			{
+				if (!DropCellFinder.IsGoodDropSpot(pos, map, allowFogged, true, true))
+				{
+					continue;
+				}
+				result = pos;
+				return true;
+			}
+			return false;
+		}
+	}
+
+	/*[HarmonyPatch(typeof(DropCellFinder), "IsGoodDropSpot")]
+	public static class Logging1 
+	{
+		public static bool Prefix(IntVec3 c, Map map, bool allowFogged, bool canRoofPunch, ref bool __result, bool allowIndoors = true)
+		{
+			if(map.IsSpace() && (!canRoofPunch || !allowIndoors))
+			{
+				__result = DropCellFinder.IsGoodDropSpot(c, map, allowFogged, true, true);
+				return true;
+			}
+			return false;
+			//if (Math.Abs(c.x - 148) < 3 && Math.Abs(c.z - 102) < 6)
+			//	Log.Warning("IGDS: " + c.x + "," + c.z + " : " + __result + "flags:" + allowFogged + canRoofPunch + allowIndoors);
+		}
+	}*/
 
 	//EVA
 	[HarmonyPatch(typeof(Pawn_PathFollower), "SetupMoveIntoNextCell")]

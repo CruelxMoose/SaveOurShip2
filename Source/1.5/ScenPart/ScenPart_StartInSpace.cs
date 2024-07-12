@@ -126,6 +126,8 @@ namespace SaveOurShip2
 				size = new IntVec3(250, 0, 250);
 
 			Map spaceMap = ShipInteriorMod2.GeneratePlayerShipMap(size);
+			Log.Error("---Start in cpaceCreated map, size:" + size);
+
 			Current.ProgramState = ProgramState.MapInitializing;
 
 			ScenPart_StartInSpace scen = (ScenPart_StartInSpace)Current.Game.Scenario.parts.FirstOrDefault(s => s is ScenPart_StartInSpace);
