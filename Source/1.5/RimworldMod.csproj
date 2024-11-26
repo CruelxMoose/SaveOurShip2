@@ -226,6 +226,7 @@
     <Compile Include="Comp\ImpactSiteComp.cs" />
     <Compile Include="Comp\InsectPillarSiteComp.cs" />
     <Compile Include="Comp\MoonPillarSiteComp.cs" />
+	<Compile Include="Comp\CompRefuelableElectric.cs" />
     <Compile Include="Comp\ShipWorldComp.cs" />
     <Compile Include="Comp\ShipMapComp.cs" />
     <Compile Include="Comp\TimedForcedExitShip.cs" />
