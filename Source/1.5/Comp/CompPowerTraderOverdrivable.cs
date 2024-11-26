@@ -29,6 +29,8 @@ namespace SaveOurShip2
 		private static Graphic turbineGraphicMiniOverdrive = GraphicDatabase.Get(typeof(Graphic_Single), "Things/Building/Ship/Reactor_Turbine_Overdrive_Mini", ShaderDatabase.Cutout, new Vector2(1.5f, 1.5f), Color.white, Color.white);
 		private static Graphic turbineGraphicMiniSuperOverdrive = GraphicDatabase.Get(typeof(Graphic_Single), "Things/Building/Ship/Reactor_Turbine_Super_Overdrive_Mini", ShaderDatabase.Cutout, new Vector2(1.5f, 1.5f), Color.white, Color.white);
 
+		private static Graphic turbineGraphicMiniCropped = GraphicDatabase.Get(typeof(Graphic_Single), "Things/Building/Ship/Reactor_Turbine_Mini_Cropped", ShaderDatabase.Cutout, new Vector2(1.5f, 1.5f), Color.white, Color.white);
+
 		private static Graphic turbineGraphicMicro;
 		private static Graphic turbineGraphicMicroOverdrive;
 		private static Graphic turbineGraphicMicroSuperOverdrive;
@@ -258,7 +260,8 @@ namespace SaveOurShip2
 				// Submods with even tininer reators - resize exisiting texture to match micro-size
 				// Scale relative to small reactor which has size 3
 				float scale = parent.def.Size.x / 3.0f;
-				turbineGraphicMicro = turbineGraphicMini.GetCopy(turbineGraphicMini.drawSize * scale, null);
+				// x2 size, because texture is cropped 2x for mini-building
+				turbineGraphicMicro = turbineGraphicMiniCropped.GetCopy(turbineGraphicMiniCropped.drawSize * scale * 2.0f, null);
 				turbineGraphicMicroOverdrive = turbineGraphicMiniOverdrive.GetCopy(turbineGraphicMiniOverdrive.drawSize * scale, null);
 				turbineGraphicMicroSuperOverdrive = turbineGraphicMiniSuperOverdrive.GetCopy(turbineGraphicMiniOverdrive.drawSize * scale, null);
 				useMicroGraphics = true;
