@@ -521,6 +521,7 @@
 					<li>CargoCloaking</li>
 					<li>CargoHeatsink</li>
 					<li>CargoArcho</li>
+					<li>SignalJammer</li>
 				</replaces>
 				<researchPrerequisites>
 					<li>ShuttleCargo</li>
@@ -566,6 +567,7 @@
 					<li>CargoAutodoc</li>
 					<li>CargoHeatsink</li>
 					<li>CargoArcho</li>
+					<li>SignalJammer</li>
 				</replaces>
 				<researchPrerequisites>
 					<li>ShipCloaking</li>
@@ -607,6 +609,7 @@
 					<li>CargoAutodoc</li>
 					<li>CargoCloaking</li>
 					<li>CargoArcho</li>
+					<li>SignalJammer</li>
 				</replaces>
 				<researchPrerequisites>
 					<li>ShipHeatsink</li>
@@ -640,6 +643,7 @@
 					<li>CargoAutodoc</li>
 					<li>CargoCloaking</li>
 					<li>CargoHeatsink</li>
+					<li>SignalJammer</li>
 				</replaces>
 				<researchPrerequisites>
 					<li>ArchotechExotics</li>
@@ -648,6 +652,46 @@
 					<ComponentSpacer>8</ComponentSpacer>
 					<Jade>200</Jade>
 					<ArchotechExoticParticles>6</ArchotechExoticParticles>
+				</ingredients>
+			</li>
+			<li MayRequire="Ludeon.RimWorld.Odyssey">
+				<key>SignalJammer</key>
+				<label>Signal Jammer</label>
+				<description>Installs signal jamming hardware, allowing access to secured orbital sites. This electronic disruption also provides a small dodge bonus in combat.\n&lt;color=#bb8f04&gt;+500 cargo capacity&lt;/color&gt;</description>
+				<icon>UI/ShuttleUpgrades/SignalJammer</icon>
+				<work>12000</work>
+				<gridCoordinate>(13,10)</gridCoordinate>
+				<upgrades>
+					<li Class="Vehicles.StatUpgrade">
+						<vehicleStats>
+							<li>
+								<def>CargoCapacity</def>
+								<value>-50</value>
+								<type>Add</type>
+							</li>
+							<li>
+								<def>SoS2CombatDodgeChance</def>
+								<value>1</value>
+								<type>Add</type>
+							</li>
+						</vehicleStats>
+					</li>
+					<li Class="SaveOurShip2.Vehicles.ShuttleSignalJammerUpgrade">
+					</li>
+				</upgrades>
+				<replaces>
+					<li>CargoAutodoc</li>
+					<li>CargoCloaking</li>
+					<li>CargoHeatsink</li>
+					<li>CargoArcho</li>
+				</replaces>
+				<researchPrerequisites>
+					<li>ShipCloaking</li>
+				</researchPrerequisites>
+				<ingredients>
+					<ComponentSpacer>5</ComponentSpacer>
+					<Steel>100</Steel>
+					<Plasteel>100</Plasteel>
 				</ingredients>
 			</li>
 			<li>
